@@ -14,6 +14,11 @@ import {StatusBar} from 'expo-status-bar';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import DropDownPicker from 'react-native-dropdown-picker';
+import DownArrow from './src/assets/DownArrow';
+import UpArrow from './src/assets/UpArrow';
+import SvgWorld from './src/assets/SvgWorld';
+import Entrypoint from './src/Entrypoint';
 
 const Drawer = createDrawerNavigator();
 
@@ -53,29 +58,51 @@ const App = () => {
     );
   }
   function Home1Screen({navigation}) {
+    const [selected, setSelected] = React.useState('');
+    const [items, setItems] = useState([
+      {label: 'Apple', value: 'apple'},
+      {label: 'Banana', value: 'banana'},
+    ]);
+
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>Home Screen1</Text>
-        <Button
-          onPress={() => navigation.navigate('Home')}
-          title="Learn More"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
+        <View style={{flex: 1}}>
+          <SvgWorld />
+          <DropDownPicker
+            style={{backgroundColor: '#0A84FF', borderWidth: 0}}
+            closeIconContainerStyle={{color: 'white'}}
+            listParentLabelStyle={{color: 'black'}}
+            modalContentContainerStyle={{
+              backgroundColor: 'red',
+              borderWidth: 1,
+            }}
+            ArrowDownIconComponent={() => <DownArrow />}
+            ArrowUpIconComponent={() => <UpArrow />}
+            textStyle={{color: 'white'}}
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+          />
+          <Text>Home Screen1</Text>
+          <Button
+            onPress={() => navigation.navigate('Home')}
+            title="Learn More"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
       </View>
     );
   }
 
   const Stack = createNativeStackNavigator();
 
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home1" component={Home1Screen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  return <Entrypoint />;
 };
 
 export default App;
