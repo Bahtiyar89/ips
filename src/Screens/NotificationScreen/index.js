@@ -6,35 +6,13 @@ const NotificationScreen = ({navigation}) => {
     <Fragment>
       <SafeAreaView
         style={{
+          paddingTop: 20,
           paddingLeft: 20,
           paddingRight: 20,
           flex: 1,
           alignItems: 'center',
           backgroundColor: '#303030',
         }}>
-        <View>
-          <View style={{}}>
-            <Text
-              style={{
-                fontSize: 24,
-                alignSelf: 'center',
-                color: '#438FF4',
-                fontWeight: '900',
-              }}>
-              Все сообщения
-            </Text>
-          </View>
-
-          <Text
-            style={{
-              fontWeight: '600',
-              fontSize: 18,
-              color: '#94A1CB',
-              textAlign: 'center',
-            }}>
-            Всего сообщений: 1
-          </Text>
-        </View>
         <View
           style={{
             padding: 10,

@@ -1,10 +1,16 @@
 import React, {Fragment, useState} from 'react';
 import {SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
-
+import {useToast} from 'react-native-toast-notifications';
 import LogoSvg from '../../assets/LogoSvg';
 import styles from './styles';
+import SvgNotifications from '../../assets/SvgNotifications';
+import SvgMessages from '../../assets/SvgMessages';
+import SvgMessagesLittle from '../../assets/SvgMessagesLittle';
+import SvgRefresh from '../../assets/SvgRefresh';
+import SvgKey from '../../assets/SvgKey';
 
 const InformationStatusScreen = ({navigation}) => {
+  const toast = useToast();
   return (
     <Fragment>
       <SafeAreaView
@@ -125,6 +131,7 @@ const InformationStatusScreen = ({navigation}) => {
                 width: '48%',
               }}
               onPress={() => navigation.navigate('MessagesStatusScreen')}>
+              <SvgMessagesLittle />
               <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>Сообщение</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -138,6 +145,7 @@ const InformationStatusScreen = ({navigation}) => {
                 width: '48%',
               }}
               onPress={() => navigation.navigate('NotificationScreen')}>
+              <SvgNotifications />
               <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>
                 Уведомление
               </Text>
@@ -160,7 +168,14 @@ const InformationStatusScreen = ({navigation}) => {
                 borderRadius: 10,
                 width: '48%',
               }}
-              onPress={() => navigation.navigate('InformationScreen')}>
+              onPress={() => {
+                toast.show('Разрабатывается', {
+                  type: 'success',
+                  duration: 3000,
+                  animationType: 'zoom-in',
+                });
+              }}>
+              <SvgRefresh />
               <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>Обновления</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -173,7 +188,14 @@ const InformationStatusScreen = ({navigation}) => {
                 borderRadius: 10,
                 width: '48%',
               }}
-              onPress={() => navigation.navigate('InformationScreen')}>
+              onPress={() => {
+                toast.show('Разрабатывается', {
+                  type: 'success',
+                  duration: 3000,
+                  animationType: 'zoom-in',
+                });
+              }}>
+              <SvgKey />
               <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>Разрешения</Text>
             </TouchableOpacity>
           </View>

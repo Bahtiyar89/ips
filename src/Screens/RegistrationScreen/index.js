@@ -132,18 +132,7 @@ const RegistrationScreen = ({navigation}) => {
                 height: 50,
                 borderRadius: 10,
               }}
-              onPress={async () => {
-                try {
-                  const pickerResult = await DocumentPicker.pickSingle({
-                    presentationStyle: 'fullScreen',
-                    copyTo: 'cachesDirectory',
-                    type: types.allFiles,
-                  });
-                  setResult([pickerResult]);
-                } catch (e) {
-                  handleError(e);
-                }
-              }}>
+              onPress={async () => console.log('ccc')}>
               <UploadSvg />
               <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>
                 Отправить логин

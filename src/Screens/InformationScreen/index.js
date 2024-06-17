@@ -30,394 +30,346 @@ const InformationScreen = ({navigation}) => {
           backgroundColor: '#303030',
           alignItems: 'center',
         }}>
-        <TouchableOpacity
-          style={{
-            bottom: 10,
-            backgroundColor: 'blue',
-            height: 50,
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          <View
+            style={{
+              paddingTop: 30,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+            <LogoSvg />
+            <Text
+              style={{
+                fontSize: 36.79,
+                lineHeight: 43.47,
+                alignSelf: 'center',
+                color: '#438FF4',
 
-            borderRadius: 10,
-          }}
-          onPress={() => navigation.navigate('InformationStatusScreen')}>
-          <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>
-            Отправить логин
-          </Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            paddingTop: 30,
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <LogoSvg />
+                fontWeight: '900',
+              }}>
+              {' '}
+              TradeMo
+            </Text>
+          </View>
           <Text
             style={{
-              fontSize: 36.79,
-              lineHeight: 43.47,
-              alignSelf: 'center',
-              color: '#438FF4',
-
-              fontWeight: '900',
+              paddingTop: 20,
+              fontWeight: '600',
+              fontSize: 18,
+              color: '#94A1CB',
+              textAlign: 'center',
             }}>
-            {' '}
-            TradeMo
+            Fingerprint:
           </Text>
-        </View>
-        <Text
-          style={{
-            paddingTop: 20,
-            fontWeight: '600',
-            fontSize: 18,
-            color: '#94A1CB',
-            textAlign: 'center',
-          }}>
-          Fingerprint:
-        </Text>
-        <Text
-          style={{
-            paddingTop: 5,
-            fontWeight: '400',
-            fontSize: 14,
-            color: '#99BCF8',
-            textAlign: 'center',
-          }}>
-          983298329382932
-        </Text>
-        <Text
-          style={{
-            paddingTop: 20,
-            fontWeight: '600',
-            fontSize: 18,
-            color: '#94A1CB',
-            textAlign: 'center',
-          }}>
-          Версия:{' '}
           <Text
             style={{
               paddingTop: 5,
               fontWeight: '400',
               fontSize: 14,
               color: '#99BCF8',
+              textAlign: 'center',
             }}>
-            1.8.7
+            983298329382932
           </Text>
-        </Text>
-        <Text
-          style={{
-            paddingTop: 20,
-            fontWeight: '600',
-            fontSize: 18,
-            color: '#94A1CB',
-            textAlign: 'center',
-          }}>
-          Предоставить приложению необходимые разрешения
-        </Text>
-        <FlatList
-          style={{
-            flex: 1,
-          }}
-          data={[
-            {
-              id: 1,
-              text: 'Сделать приложением SMS по-умолчанию',
-            },
-          ]}
-          keyExtractor={state => (Math.random(100) * 10).toString()}
-          renderItem={({item}) => {
-            return (
-              <View
-                style={{
-                  marginTop: 20,
-                  width: '100%',
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  alignSelf: 'center',
-                }}>
-                <SvgMessages />
-                <Text
-                  style={{
-                    fontWeight: '600',
-                    fontSize: 14,
-                    color: '#94A1CB',
-                    textAlign: 'center',
-                    width: '50%',
-                  }}></Text>
-
-                <Switch
-                  trackColor={{false: '#767577', true: '#81b0ff'}}
-                  thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-                  ios_backgroundColor="#3e3e3e"
-                  onValueChange={toggleSwitch}
-                  value={isEnabled}
-                />
-              </View>
-            );
-          }}
-        />
-
-        <View
-          style={{
-            marginTop: 20,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-around',
-            flexDirection: 'row',
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}>
-          <SvgMessages />
           <Text
             style={{
+              paddingTop: 20,
               fontWeight: '600',
-              fontSize: 14,
+              fontSize: 18,
               color: '#94A1CB',
               textAlign: 'center',
-              width: '50%',
             }}>
-            Доступ к просмотру SMS сообщений
+            Версия:{' '}
+            <Text
+              style={{
+                paddingTop: 5,
+                fontWeight: '400',
+                fontSize: 14,
+                color: '#99BCF8',
+              }}>
+              1.8.7
+            </Text>
           </Text>
-
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-        </View>
-
-        <View
-          style={{
-            marginTop: 20,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-around',
-            flexDirection: 'row',
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}>
-          <SvgMessages />
           <Text
             style={{
+              paddingTop: 20,
               fontWeight: '600',
-              fontSize: 14,
+              fontSize: 18,
               color: '#94A1CB',
               textAlign: 'center',
-              width: '50%',
             }}>
-            Сделать к сохранению файлов обновления
+            Предоставить приложению необходимые разрешения
           </Text>
 
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-        </View>
-
-        <View
-          style={{
-            marginTop: 20,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-around',
-            flexDirection: 'row',
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}>
-          <SvgMessages />
-          <Text
+          <View
             style={{
-              fontWeight: '600',
-              fontSize: 14,
-              color: '#94A1CB',
-              textAlign: 'center',
-              width: '50%',
+              marginTop: 20,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignSelf: 'center',
             }}>
-            Доступ к автоматической установке установке обновлений
-          </Text>
+            <SvgMessages />
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 14,
+                color: '#94A1CB',
+                textAlign: 'center',
+                width: '50%',
+              }}>
+              Доступ к просмотру SMS сообщений
+            </Text>
 
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-        </View>
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
 
-        <View
-          style={{
-            marginTop: 20,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-around',
-            flexDirection: 'row',
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}>
-          <SvgMessages />
-          <Text
+          <View
             style={{
-              fontWeight: '600',
-              fontSize: 14,
-              color: '#94A1CB',
-              textAlign: 'center',
-              width: '50%',
+              marginTop: 20,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignSelf: 'center',
             }}>
-            Доступ к режиму "Не беспокоить"
-          </Text>
+            <SvgMessages />
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 14,
+                color: '#94A1CB',
+                textAlign: 'center',
+                width: '50%',
+              }}>
+              Сделать к сохранению файлов обновления
+            </Text>
 
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-        </View>
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
 
-        <View
-          style={{
-            marginTop: 20,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-around',
-            flexDirection: 'row',
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}>
-          <SvgMessages />
-          <Text
+          <View
             style={{
-              fontWeight: '600',
-              fontSize: 14,
-              color: '#94A1CB',
-              textAlign: 'center',
-              width: '50%',
+              marginTop: 20,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignSelf: 'center',
             }}>
-            Доступ к информации о сим картах
-          </Text>
+            <SvgMessages />
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 14,
+                color: '#94A1CB',
+                textAlign: 'center',
+                width: '50%',
+              }}>
+              Доступ к автоматической установке установке обновлений
+            </Text>
 
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-        </View>
-        <View
-          style={{
-            marginTop: 20,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-around',
-            flexDirection: 'row',
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}>
-          <SvgMessages />
-          <Text
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
+
+          <View
             style={{
-              fontWeight: '600',
-              fontSize: 14,
-              color: '#94A1CB',
-              textAlign: 'center',
-              width: '50%',
+              marginTop: 20,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignSelf: 'center',
             }}>
-            Доступ к информации о сим картах
-          </Text>
+            <SvgMessages />
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 14,
+                color: '#94A1CB',
+                textAlign: 'center',
+                width: '50%',
+              }}>
+              Доступ к режиму "Не беспокоить"
+            </Text>
 
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-        </View>
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
 
-        <View
-          style={{
-            marginTop: 20,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-around',
-            flexDirection: 'row',
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}>
-          <SvgMessages />
-          <Text
+          <View
             style={{
-              fontWeight: '600',
-              fontSize: 14,
-              color: '#94A1CB',
-              textAlign: 'center',
-              width: '50%',
+              marginTop: 20,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignSelf: 'center',
             }}>
-            Доступ к информации о состоянии телефона
-          </Text>
+            <SvgMessages />
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 14,
+                color: '#94A1CB',
+                textAlign: 'center',
+                width: '50%',
+              }}>
+              Доступ к информации о сим картах
+            </Text>
 
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-        </View>
-        <View
-          style={{
-            marginTop: 20,
-            marginBottom: 40,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-around',
-            flexDirection: 'row',
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}>
-          <SvgMessages />
-          <Text
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
+          <View
             style={{
-              fontWeight: '600',
-              fontSize: 14,
-              color: '#94A1CB',
-              textAlign: 'center',
-              width: '50%',
+              marginTop: 20,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignSelf: 'center',
             }}>
-            Активировать чтение пуш-уведомлений
-          </Text>
+            <SvgMessages />
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 14,
+                color: '#94A1CB',
+                textAlign: 'center',
+                width: '50%',
+              }}>
+              Доступ к информации о сим картах
+            </Text>
 
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-        </View>
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
 
-        <TouchableOpacity
-          style={{
-            bottom: 10,
-            backgroundColor: 'blue',
-            height: 50,
+          <View
+            style={{
+              marginTop: 20,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignSelf: 'center',
+            }}>
+            <SvgMessages />
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 14,
+                color: '#94A1CB',
+                textAlign: 'center',
+                width: '50%',
+              }}>
+              Доступ к информации о состоянии телефона
+            </Text>
 
-            borderRadius: 10,
-          }}
-          onPress={() => navigation.navigate('InformationStatusScreen')}>
-          <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>
-            Отправить логин
-          </Text>
-        </TouchableOpacity>
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
+          <View
+            style={{
+              marginTop: 20,
+              marginBottom: 40,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignSelf: 'center',
+            }}>
+            <SvgMessages />
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 14,
+                color: '#94A1CB',
+                textAlign: 'center',
+                width: '50%',
+              }}>
+              Активировать чтение пуш-уведомлений
+            </Text>
+
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
+
+          <TouchableOpacity
+            style={{
+              bottom: 10,
+              backgroundColor: 'blue',
+              height: 50,
+
+              borderRadius: 10,
+            }}
+            onPress={() => navigation.navigate('InformationStatusScreen')}>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#FFFFFF',
+                textAlignVertical: 'center',
+                height: 50,
+                fontSize: 18,
+              }}>
+              Отправить логин
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
       </SafeAreaView>
     </Fragment>
   );

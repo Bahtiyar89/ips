@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Image, StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import RegistrationScreen from '../Screens/RegistrationScreen';
@@ -10,22 +10,50 @@ import NotificationScreen from '../Screens/NotificationScreen';
 
 const Stack = createNativeStackNavigator();
 
-const MainScreen = ({navigation}) => {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>MainScreen</Text>
-      <Button
-        title="Go to Settings"
-        onPress={() => navigation.navigate('Settings')}
-      />
-      <Button title="Go back" onPress={() => navigation.goBack()} />
+const MainScreens = () => {
+  const renderMessagesHeader = () => (
+    <View style={{backgroundColor: 'grey', paddingLeft: 20}}>
+      <Text
+        style={{
+          fontSize: 24,
+          color: '#438FF4',
+          fontWeight: '900',
+        }}>
+        Все сообщения
+      </Text>
+      <Text
+        style={{
+          fontWeight: '600',
+          fontSize: 18,
+          color: '#94A1CB',
+        }}>
+        Всего сообщений
+      </Text>
     </View>
   );
-};
+  const renderNotificationHeader = () => (
+    <View style={{backgroundColor: 'grey', paddingLeft: 20}}>
+      <Text
+        style={{
+          fontSize: 24,
+          color: '#438FF4',
+          fontWeight: '900',
+        }}>
+        Все уведомления
+      </Text>
+      <Text
+        style={{
+          fontWeight: '600',
+          fontSize: 18,
+          color: '#94A1CB',
+        }}>
+        Всего уведомлений:0
+      </Text>
+    </View>
+  );
 
-const MainScreens = () => {
   return (
-    <Stack.Navigator initialRouteName="InformationStatusScreen">
+    <Stack.Navigator initialRouteName="RegistrationScreen">
       <Stack.Screen
         name="RegistrationScreen"
         component={RegistrationScreen}
@@ -51,14 +79,14 @@ const MainScreens = () => {
         name="MessagesStatusScreen"
         component={MessagesStatusScreen}
         options={{
-          headerShown: false,
+          header: () => renderMessagesHeader(),
         }}
       />
       <Stack.Screen
         name="NotificationScreen"
         component={NotificationScreen}
         options={{
-          headerShown: false,
+          header: () => renderNotificationHeader(),
         }}
       />
     </Stack.Navigator>
