@@ -1,13 +1,8 @@
-import React, {useState} from 'react';
-import {Button, Image, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {Button, Text, View} from 'react-native';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
-import DropDownPicker from 'react-native-dropdown-picker';
-import DownArrow from '../assets/DownArrow';
-import UpArrow from '../assets/UpArrow';
-import SvgWorld from '../assets/SvgWorld';
-import LanguageScreen from '../Screens/LanguageScreen';
+import MenuScreen from '../Screens/MenuScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,13 +41,38 @@ const PasswordScreen = ({navigation}) => {
 };
 
 const LoginScreens = () => {
+  const renderHeaderMain = () => (
+    <View style={{backgroundColor: '#2691FF', paddingLeft: 20}}>
+      <Text
+        style={{
+          fontSize: 24,
+          color: '#fff',
+          fontWeight: '900',
+        }}>
+        Все сообщения
+      </Text>
+      <Text
+        style={{
+          fontWeight: '600',
+          fontSize: 18,
+          color: '#94A1CB',
+        }}>
+        Всего сообщений
+      </Text>
+    </View>
+  );
+
   return (
-    <Stack.Navigator initialRouteName="LanguageScreen">
+    <Stack.Navigator initialRouteName="MenuScreen">
       <Stack.Screen
-        name="LanguageScreen"
-        component={LanguageScreen}
+        name="MenuScreen"
+        component={MenuScreen}
         options={{
-          headerShown: false,
+          contentStyle: '#fff',
+          headerTintColor: '#fff',
+          title: 'Incomming Sms Farwarder',
+          headerStyle: {backgroundColor: '#2691FF', headerTintColor: '#fff'},
+          headerRight: () => <Text style={{color: '#fff'}}>SYSLOG</Text>,
         }}
       />
       <Stack.Screen

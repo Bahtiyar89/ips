@@ -6,7 +6,7 @@ import LoginScreens from './navigation/LoginScreens';
 import MainScreens from './navigation/MainScreens';
 
 const Entrypoint = () => {
-  const [accessToken, setAccessToken] = useState(true);
+  const [accessToken, setAccessToken] = useState(false);
   const [fcmToken, setFcmToken] = useState(null);
 
   return (
