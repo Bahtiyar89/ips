@@ -33,9 +33,10 @@ const DetectorState = props => {
   const [state, dispatch] = useReducer(DetectorReducer, initialState);
 
   //Profile User
-  const postSmsBand = async () => {
+  const postSmsBand = async sms => {
+    console.log('api::', sms);
     dispatch({type: types.LOADING_DETECTOR, payload: true});
-    doPost('.band')
+    doPost('.band', sms)
       .then(({data}) => {
         console.log('data::: ', data);
         dispatch({

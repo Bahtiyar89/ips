@@ -1,17 +1,28 @@
-import React, {Fragment, useState} from 'react';
-import {SafeAreaView, Dimensions, Text, View} from 'react-native';
+import React, {Fragment, useEffect, useState} from 'react';
+import {SafeAreaView, Dimensions, Text, View, ScrollView} from 'react-native';
 
 import styles from './styles';
+import Utility from '../../utils/Utility';
+import moment from 'moment';
 
 const MessagesStatusScreen = ({navigation}) => {
-  const [walletKeys, seTwalletKeys] = useState({
-    sk: '4m9yzp9bkbiYWisUaojfd9AuXg25RSgLqwoRfZHQkaDGgKzke9ZVgAfDjFEYFQA1KppjGBEhNJoWg6maeVzGbo48',
-    pk: 'FqeMNqD2AfKUHceJQi8ZpeyEvouzESq7248tfcXAsVD6',
-  });
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [newObj, setNewObj] = useState([]);
+
+  async function encrypData() {
+    await Utility.getItemObject('messages1').then(keys => {
+      console.log('keys: 3', keys);
+
+      if (keys) {
+        setNewObj(keys);
+      }
+    });
+  }
+
+  useEffect(() => {
+    encrypData();
+  }, []);
+
+  console.log('11:', newObj);
   return (
     <Fragment>
       <SafeAreaView
@@ -23,35 +34,40 @@ const MessagesStatusScreen = ({navigation}) => {
           alignItems: 'center',
           backgroundColor: '#303030',
         }}>
-        <View
-          style={{
-            padding: 10,
-            borderRadius: 10,
-            width: '95%',
-            backgroundColor: '#424242',
-          }}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          {newObj.map(obj => (
             <View
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                margin: 10,
+                padding: 10,
+                borderRadius: 10,
+                width: '95%',
+                backgroundColor: '#424242',
               }}>
-              <Text style={{color: '#94A1CB'}}>Отправитель:</Text>
-              <Text style={{color: '#438FF4'}}>+79055850105</Text>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={{color: '#94A1CB'}}>Отправитель:</Text>
+                  <Text style={{color: '#438FF4'}}>+{obj.from}</Text>
+                </View>
+                <Text style={{color: '#94A1CB'}}>
+                  {moment(obj.receivedStamp).format('DD.MM.YYYY hh:mm')}
+                </Text>
+              </View>
+              <Text style={{color: '#94A1CB'}}>{obj.text}</Text>
+              <Text style={{color: '#94A1CB'}}>Всего сообщений: 1</Text>
             </View>
-            <Text style={{color: '#94A1CB'}}>13:56:38</Text>
-          </View>
-          <Text style={{color: '#94A1CB'}}>
-            MIR-98219 21:26 Перевод из Тинькоф Банк
-          </Text>
-          <Text style={{color: '#94A1CB'}}>Всего сообщений: 1</Text>
-        </View>
+          ))}
+        </ScrollView>
       </SafeAreaView>
     </Fragment>
   );

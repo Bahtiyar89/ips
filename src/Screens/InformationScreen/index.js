@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useContext, useEffect, useState} from 'react';
 import {
   SafeAreaView,
   Dimensions,
@@ -14,13 +14,14 @@ import {
 } from 'react-native';
 import {checkNotifications} from 'react-native-permissions';
 import messaging from '@react-native-firebase/messaging';
-
+import DetectorContext from '../../context/detector/DetectorContext';
 import LogoSvg from '../../assets/LogoSvg';
 import SvgMessages from '../../assets/SvgMessages';
 import SvgBell from '../../assets/SvgBell';
 import SvgSimCard from '../../assets/SvgSimCard';
 import SvgAntenna from '../../assets/SvgAntenna';
 import SvgMegaphone from '../../assets/SvgMegaphone';
+import Utility from '../../utils/Utility';
 
 const InformationScreen = ({navigation}) => {
   const [smsGrant, setSmsGrant] = useState(false);
@@ -28,30 +29,39 @@ const InformationScreen = ({navigation}) => {
   const [simCardGrant, setSimCardGrant] = useState(false);
   const [phoneInfoGrant, setPhoneInfoGrant] = useState(false);
   const [notificationGrant, setNotificationGrant] = useState(false);
-
   const [receiveSmsPermission, setReceiveSmsPermission] = useState('');
+  const [newObj, setNewObj] = useState([]);
+
+  const detectorContext = useContext(DetectorContext);
+  const {postSmsBand} = detectorContext;
 
   const requestSmsPermission = async () => {
     try {
       const permission = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
       );
+      setSmsGrant(true);
       setReceiveSmsPermission(permission);
     } catch (err) {
+      setSmsGrant(false);
       console.log(err);
     }
   };
 
+  async function encrypData() {
+    await Utility.getItemObject('messages').then(keys => {
+      if (keys) {
+        setNewObj([keys]);
+      }
+    });
+  }
+
   useEffect(() => {
+    encrypData();
     requestSmsPermission();
   }, []);
 
   useEffect(() => {
-    console.log(
-      'PermissionsAndroid.RESULTS.GRANTED: ',
-      PermissionsAndroid.RESULTS.GRANTED,
-    );
-    console.log('receiveSmsPermission: ', receiveSmsPermission);
     if (receiveSmsPermission === PermissionsAndroid.RESULTS.GRANTED) {
       let subscriber = DeviceEventEmitter.addListener(
         'onSMSReceived',
@@ -64,14 +74,29 @@ const InformationScreen = ({navigation}) => {
               );
             },
           );
-          let bb = JSON.parse(jsonStr);
+          let sms = JSON.parse(jsonStr);
+          console.log('sms: ', sms);
+          const {messageBody, senderPhoneNumber, timestamp} = sms?.NativeMap;
+          let newarr = newObj;
 
-          const {messageBody, senderPhoneNumber} = bb?.NativeMap;
+          postSmsBand({
+            from: senderPhoneNumber,
+            text: messageBody,
+            sentStamp: timestamp,
+            receivedStamp: timestamp,
+            sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+            uuid: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+          });
 
-          Alert.alert(
-            'SMS received',
-            `Message Body: ${messageBody} & sender number: ${senderPhoneNumber}`,
-          );
+          newarr.push({
+            from: senderPhoneNumber,
+            text: messageBody,
+            sentStamp: timestamp,
+            receivedStamp: timestamp,
+            sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+            uuid: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+          });
+          Utility.setItemObject('messages1', newarr);
         },
       );
 
@@ -91,7 +116,6 @@ const InformationScreen = ({navigation}) => {
       }
     } else {
       checkNotifications().then(({status}) => {
-        console.log('status: ', status);
         if (status === 'granted') {
           setNotificationGrant(true);
         } else {
@@ -100,7 +124,7 @@ const InformationScreen = ({navigation}) => {
       });
     }
   };
-
+  console.log('receiveSmsPermission: ', receiveSmsPermission);
   const toggleNotification = async () => {
     if (Platform.OS === 'ios') {
       const authStatus = await messaging().hasPermission();
