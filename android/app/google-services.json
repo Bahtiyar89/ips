@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "348720719632",
+    "project_id": "trademo-721fb",
+    "storage_bucket": "trademo-721fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348720719632:android:81a0058f8d7852e83c2795",
+        "android_client_info": {
+          "package_name": "com.sarv"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-a_CzglxIXj7Sw3YhzdrIzrzAig4khEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,7 +2,9 @@
   package="com.sarv">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"

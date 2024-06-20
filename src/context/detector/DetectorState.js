@@ -10,11 +10,9 @@ import {
   doPost2,
   doDelete,
 } from '../../utils/apiActions';
-import axios from '../../utils/globalApi';
 import * as types from './types';
 import {request} from '../../services/api';
 import {getItemFromStorage} from '../../utils/localStorage';
-import Utility from '../../utils/Utility';
 
 const DetectorState = props => {
   const toast = useToast();

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import utility from './Utility';
 
 export const doGet = async (uri, params = {}) => {
   const config = {

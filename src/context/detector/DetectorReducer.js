@@ -1,4 +1,3 @@
-import moment from 'moment';
 import * as types from './types';
 
 const INITIAL_STATE = {
@@ -35,12 +34,6 @@ export default (state = INITIAL_STATE, action) => {
       };
     case types.GET_HISTORY_TIME:
       const {current_date, lasthistory} = action.payload;
-      const current_time = moment(current_date?.current_date_time).format(
-        'DD.MM.YYYY hh:mm',
-      );
-      const history_time = moment(lasthistory?.created)
-        .add(30, 'minutes')
-        .format('DD.MM.YYYY hh:mm');
 
       console.log('current_time', current_time);
       console.log('history_time', history_time);
