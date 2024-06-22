@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 import {ToastProvider} from 'react-native-toast-notifications';
 import messaging from '@react-native-firebase/messaging';
-import {Platform, PermissionsAndroid} from 'react-native';
+import {Platform, PermissionsAndroid, NativeModules} from 'react-native';
 
 import Entrypoint from './src/Entrypoint';
 import DetectorState from './src/context/detector/DetectorState';
 import './src/constants/DCSLocalize';
+const {BatteryModule} = NativeModules;
 
 const App = () => {
   useEffect(() => {
@@ -42,6 +43,12 @@ const App = () => {
       }
     }
   };
+
+  useEffect(() => {
+    BatteryModule.getBatteryLevel()
+      .then(level => console.log('level', level))
+      .catch(error => console.log('error', error));
+  }, []);
 
   return (
     <ToastProvider placement="top" offsetTop={40}>

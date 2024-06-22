@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import {
   Button,
   Image,
@@ -9,13 +9,18 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Pressable,
+  NativeModules,
 } from 'react-native';
+import {useTranslation} from 'react-i18next';
+import PushNotification from 'react-native-push-notification';
+
 import GradientSvg from '../../assets/GradientSvg';
 import styles from './styles';
 import UploadSvg from '../../assets/UploadSvg';
 import LogoSvg from '../../assets/LogoSvg';
-import {useTranslation} from 'react-i18next';
+import LocalNotification from '../../components/LocalNotification';
+
+const {BatteryModule} = NativeModules;
 
 const RegistrationScreen = ({navigation}) => {
   const {t, i18n} = useTranslation();
@@ -23,10 +28,20 @@ const RegistrationScreen = ({navigation}) => {
     sk: '4m9yzp9bkbiYWisUaojfd9AuXg25RSgLqwoRfZHQkaDGgKzke9ZVgAfDjFEYFQA1KppjGBEhNJoWg6maeVzGbo48',
     pk: 'FqeMNqD2AfKUHceJQi8ZpeyEvouzESq7248tfcXAsVD6',
   });
+  const [localNot, setLocalNot] = useState(false);
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
 
   const submitLogin = () => {};
+
+  useEffect(() => {
+    BatteryModule.getBatteryLevel()
+      .then(level => setLocalNot(parseFloat(level) <= 0.2))
+      .catch(error => console.log('error', error));
+  }, []);
+  useEffect(() => {
+    LocalNotification();
+  }, localNot);
   return (
     <Fragment>
       <GradientSvg
@@ -134,7 +149,7 @@ const RegistrationScreen = ({navigation}) => {
                 height: 50,
                 borderRadius: 10,
               }}
-              onPress={async () => console.log('ccc')}>
+              onPress={async () => LocalNotification()}>
               <UploadSvg />
               <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>
                 {t('t:send_login')}
