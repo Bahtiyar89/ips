@@ -1,7 +1,9 @@
 import React, {Fragment, useState} from 'react';
 import {SafeAreaView, Dimensions, Text, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 const NotificationScreen = ({navigation}) => {
+  const {t, i18n} = useTranslation();
   return (
     <Fragment>
       <SafeAreaView
@@ -32,7 +34,7 @@ const NotificationScreen = ({navigation}) => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}>
-              <Text style={{color: '#94A1CB'}}>Отправитель:</Text>
+              <Text style={{color: '#94A1CB'}}>{t('t:sender')}:</Text>
               <Text style={{color: '#438FF4'}}>+79055850105</Text>
             </View>
             <Text style={{color: '#94A1CB'}}>13:56:38</Text>
@@ -40,7 +42,7 @@ const NotificationScreen = ({navigation}) => {
           <Text style={{color: '#94A1CB'}}>
             MIR-98219 21:26 Перевод из Тинькоф Банк
           </Text>
-          <Text style={{color: '#94A1CB'}}>Всего сообщений: 1</Text>
+          <Text style={{color: '#94A1CB'}}>{t('t:total_messages')}: 1</Text>
         </View>
       </SafeAreaView>
     </Fragment>

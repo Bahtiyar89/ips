@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import RegistrationScreen from '../Screens/RegistrationScreen';
@@ -11,6 +12,7 @@ import NotificationScreen from '../Screens/NotificationScreen';
 const Stack = createNativeStackNavigator();
 
 const MainScreens = () => {
+  const {t, i18n} = useTranslation();
   const renderMessagesHeader = () => (
     <View style={{backgroundColor: 'grey', paddingLeft: 20}}>
       <Text
@@ -19,7 +21,7 @@ const MainScreens = () => {
           color: '#438FF4',
           fontWeight: '900',
         }}>
-        Все сообщения
+        {t('t:all_messages')}
       </Text>
       <Text
         style={{
@@ -27,7 +29,7 @@ const MainScreens = () => {
           fontSize: 18,
           color: '#94A1CB',
         }}>
-        Всего сообщений
+        {t('t:total_messages')}
       </Text>
     </View>
   );
@@ -39,7 +41,7 @@ const MainScreens = () => {
           color: '#438FF4',
           fontWeight: '900',
         }}>
-        Все уведомления
+        {t('t:all_notifications')}
       </Text>
       <Text
         style={{
@@ -47,7 +49,7 @@ const MainScreens = () => {
           fontSize: 18,
           color: '#94A1CB',
         }}>
-        Всего уведомлений:0
+        {t('t:total_notifications')}:0
       </Text>
     </View>
   );

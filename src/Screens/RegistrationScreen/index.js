@@ -15,8 +15,10 @@ import GradientSvg from '../../assets/GradientSvg';
 import styles from './styles';
 import UploadSvg from '../../assets/UploadSvg';
 import LogoSvg from '../../assets/LogoSvg';
+import {useTranslation} from 'react-i18next';
 
 const RegistrationScreen = ({navigation}) => {
+  const {t, i18n} = useTranslation();
   const [walletKeys, seTwalletKeys] = useState({
     sk: '4m9yzp9bkbiYWisUaojfd9AuXg25RSgLqwoRfZHQkaDGgKzke9ZVgAfDjFEYFQA1KppjGBEhNJoWg6maeVzGbo48',
     pk: 'FqeMNqD2AfKUHceJQi8ZpeyEvouzESq7248tfcXAsVD6',
@@ -54,7 +56,7 @@ const RegistrationScreen = ({navigation}) => {
               display: 'flex',
               flexDirection: 'row',
             }}>
-            <LogoSvg fill={'#303030'} />
+            {/* <LogoSvg fill={'#303030'} />*/}
             <Text
               style={{
                 fontSize: 36.79,
@@ -65,11 +67,11 @@ const RegistrationScreen = ({navigation}) => {
                 fontWeight: '900',
               }}>
               {' '}
-              TradeMo
+              IPS PRO
             </Text>
           </View>
 
-          <Text
+          {/* <Text
             style={{
               paddingTop: 20,
               fontWeight: '600',
@@ -107,7 +109,7 @@ const RegistrationScreen = ({navigation}) => {
               }}>
               1.8.7
             </Text>
-          </Text>
+          </Text>*/}
         </View>
         <View>
           <Text
@@ -119,7 +121,7 @@ const RegistrationScreen = ({navigation}) => {
 
               fontWeight: '900',
             }}>
-            Авторизация устройства
+            {t('t:device_authorization')}
           </Text>
           <View>
             <TouchableOpacity
@@ -135,13 +137,13 @@ const RegistrationScreen = ({navigation}) => {
               onPress={async () => console.log('ccc')}>
               <UploadSvg />
               <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>
-                Отправить логин
+                {t('t:send_login')}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
         <View>
-          <Text style={styles.legend}>Секретный ключ</Text>
+          <Text style={styles.legend}>{t('t:secret_key')}</Text>
           <View style={styles.inputWrapper}>
             <TextInput
               style={[styles.input]}
@@ -164,7 +166,9 @@ const RegistrationScreen = ({navigation}) => {
                 borderRadius: 10,
               }}
               onPress={() => navigation.navigate('InformationScreen')}>
-              <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>Подключить</Text>
+              <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>
+                {t('t:to_plug')}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

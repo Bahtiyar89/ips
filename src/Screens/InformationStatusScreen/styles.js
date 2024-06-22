@@ -73,6 +73,35 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     color: '#FFFFFF',
   },
+
+  chooseLanguage: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontWeight: '700',
+    fontSize: 16,
+    color: '#000',
+  },
+
+  buttonContainer: {
+    marginTop: 10,
+    backgroundColor: '#438FF4',
+  },
+
+  text: {
+    fontSize: 18,
+    color: '#000',
+    paddingVertical: 4,
+    textAlign: 'center',
+    color: '#fff',
+  },
+
+  selectedText: {
+    fontSize: 18,
+    fontWeight: '900',
+    color: 'orange',
+    paddingVertical: 4,
+    textAlign: 'center',
+  },
 });
 
 export default styles;

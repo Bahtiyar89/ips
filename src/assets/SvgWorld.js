@@ -1,16 +1,15 @@
 import * as React from 'react';
 import Svg, {RadialGradient, Stop, Path} from 'react-native-svg';
 
-function SvgWorld(props) {
+function SvgWorld({width = '80px', height = '80px'}) {
   return (
     <Svg
-      width="80px"
-      height="80px"
+      width={width}
+      height={height}
       viewBox="0 0 128 128"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
-      className="iconify iconify--noto"
-      {...props}>
+      className="iconify iconify--noto">
       <RadialGradient
         id="a"
         cx={43.972}

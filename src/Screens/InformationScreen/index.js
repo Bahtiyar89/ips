@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import {checkNotifications} from 'react-native-permissions';
 import messaging from '@react-native-firebase/messaging';
+import {useTranslation} from 'react-i18next';
 import DetectorContext from '../../context/detector/DetectorContext';
 import LogoSvg from '../../assets/LogoSvg';
 import SvgMessages from '../../assets/SvgMessages';
@@ -24,6 +25,8 @@ import SvgMegaphone from '../../assets/SvgMegaphone';
 import Utility from '../../utils/Utility';
 
 const InformationScreen = ({navigation}) => {
+  const {t, i18n} = useTranslation();
+
   const [smsGrant, setSmsGrant] = useState(false);
   const [planeGrant, setPlaneGrant] = useState(false);
   const [simCardGrant, setSimCardGrant] = useState(false);
@@ -162,7 +165,7 @@ const InformationScreen = ({navigation}) => {
               flexDirection: 'row',
               justifyContent: 'center',
             }}>
-            <LogoSvg />
+            {/*  <LogoSvg />*/}
             <Text
               style={{
                 fontSize: 36.79,
@@ -173,10 +176,10 @@ const InformationScreen = ({navigation}) => {
                 fontWeight: '900',
               }}>
               {' '}
-              TradeMo
+              IPS PRO
             </Text>
           </View>
-          <Text
+          {/*<Text
             style={{
               paddingTop: 20,
               fontWeight: '600',
@@ -214,7 +217,7 @@ const InformationScreen = ({navigation}) => {
               }}>
               1.8.7
             </Text>
-          </Text>
+          </Text>*/}
           <Text
             style={{
               paddingTop: 20,
@@ -223,7 +226,7 @@ const InformationScreen = ({navigation}) => {
               color: '#94A1CB',
               textAlign: 'center',
             }}>
-            Предоставить приложению необходимые разрешения
+            {t('t:grant_permission')}
           </Text>
 
           <View
@@ -245,7 +248,7 @@ const InformationScreen = ({navigation}) => {
                 textAlign: 'center',
                 width: '50%',
               }}>
-              Доступ к просмотру SMS
+              {t('t:grant_sms')}
             </Text>
 
             <Switch
@@ -276,7 +279,7 @@ const InformationScreen = ({navigation}) => {
                 textAlign: 'center',
                 width: '50%',
               }}>
-              Доступ к режиму не беспокоить
+              {t('t:dnd')}
             </Text>
 
             <Switch
@@ -309,7 +312,7 @@ const InformationScreen = ({navigation}) => {
                 textAlign: 'center',
                 width: '50%',
               }}>
-              Доступ к информации о сим картах
+              {t('t:grant_sim')}
             </Text>
 
             <Switch
@@ -342,7 +345,7 @@ const InformationScreen = ({navigation}) => {
                 textAlign: 'center',
                 width: '50%',
               }}>
-              Доступ к информации о состоянии телефона
+              {t('t:grant_phone_status')}
             </Text>
 
             <Switch
@@ -375,7 +378,7 @@ const InformationScreen = ({navigation}) => {
                 textAlign: 'center',
                 width: '50%',
               }}>
-              Активировать чтение пуш-уведомлений
+              {t('t:grant_push')}
             </Text>
 
             <Switch
@@ -405,7 +408,7 @@ const InformationScreen = ({navigation}) => {
                 height: 50,
                 fontSize: 18,
               }}>
-              Далее
+              {t('t:next')}
             </Text>
           </TouchableOpacity>
         </ScrollView>

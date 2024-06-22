@@ -5,6 +5,7 @@ import {Platform, PermissionsAndroid} from 'react-native';
 
 import Entrypoint from './src/Entrypoint';
 import DetectorState from './src/context/detector/DetectorState';
+import './src/constants/DCSLocalize';
 
 const App = () => {
   useEffect(() => {

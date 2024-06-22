@@ -1,16 +1,33 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useRef} from 'react';
 import {SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
 import {useToast} from 'react-native-toast-notifications';
-import LogoSvg from '../../assets/LogoSvg';
-import styles from './styles';
+import {useTranslation} from 'react-i18next';
+import BottomSheet from 'react-native-gesture-bottom-sheet';
+
 import SvgNotifications from '../../assets/SvgNotifications';
 import SvgMessages from '../../assets/SvgMessages';
 import SvgMessagesLittle from '../../assets/SvgMessagesLittle';
 import SvgRefresh from '../../assets/SvgRefresh';
 import SvgKey from '../../assets/SvgKey';
+import LogoSvg from '../../assets/LogoSvg';
+import styles from './styles';
+import SvgWorld from '../../assets/SvgWorld';
+
+const LANGUAGES = [
+  {code: 'en', label: 'English'},
+  {code: 'ru', label: 'Русский'},
+];
 
 const InformationStatusScreen = ({navigation}) => {
+  const {t, i18n} = useTranslation();
   const toast = useToast();
+  const bottomSheet = useRef();
+
+  const setLanguage = code => {
+    bottomSheet.current?.close();
+    return i18n.changeLanguage(code);
+  };
+  const selectedLanguageCode = i18n.language;
   return (
     <Fragment>
       <SafeAreaView
@@ -28,7 +45,7 @@ const InformationStatusScreen = ({navigation}) => {
               display: 'flex',
               flexDirection: 'row',
             }}>
-            <LogoSvg />
+            {/*  <LogoSvg />*/}
             <Text
               style={{
                 fontSize: 36.79,
@@ -38,11 +55,11 @@ const InformationStatusScreen = ({navigation}) => {
                 fontWeight: '900',
               }}>
               {' '}
-              TradeMo
+              IPS PRO
             </Text>
           </View>
 
-          <Text
+          {/*<Text
             style={{
               paddingTop: 20,
               fontWeight: '600',
@@ -61,7 +78,7 @@ const InformationStatusScreen = ({navigation}) => {
               textAlign: 'center',
             }}>
             983298329382932
-          </Text>
+          </Text>*/}
         </View>
         <View>
           <Text
@@ -72,7 +89,7 @@ const InformationStatusScreen = ({navigation}) => {
               color: '#94A1CB',
               fontWeight: '900',
             }}>
-            Устройство подключено
+            {t('t:device_connected')}
           </Text>
 
           <Text
@@ -94,7 +111,7 @@ const InformationStatusScreen = ({navigation}) => {
             </Text>
           </Text>
 
-          <Text
+          {/* <Text
             style={{
               fontWeight: '600',
               fontSize: 18,
@@ -111,7 +128,7 @@ const InformationStatusScreen = ({navigation}) => {
               }}>
               Release 1.8.7
             </Text>
-          </Text>
+          </Text>*/}
         </View>
         <View>
           <View
@@ -125,29 +142,31 @@ const InformationStatusScreen = ({navigation}) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: 'blue',
+                backgroundColor: '#438FF4',
                 height: 50,
                 borderRadius: 10,
                 width: '48%',
               }}
               onPress={() => navigation.navigate('MessagesStatusScreen')}>
               <SvgMessagesLittle />
-              <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>Сообщение</Text>
+              <Text style={{paddingLeft: 5, fontSize: 16, color: '#FFFFFF'}}>
+                {t('t:message')}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: 'blue',
+                backgroundColor: '#438FF4',
                 height: 50,
                 borderRadius: 10,
                 width: '48%',
               }}
               onPress={() => navigation.navigate('NotificationScreen')}>
-              <SvgNotifications />
-              <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>
-                Уведомление
+              <SvgNotifications fill={'#fff'} />
+              <Text style={{paddingLeft: 5, fontSize: 16, color: '#FFFFFF'}}>
+                {t('t:notification')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -176,7 +195,9 @@ const InformationStatusScreen = ({navigation}) => {
                 });
               }}>
               <SvgRefresh />
-              <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>Обновления</Text>
+              <Text style={{paddingLeft: 5, fontSize: 16, color: '#FFFFFF'}}>
+                {t('t:updates')}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -196,19 +217,65 @@ const InformationStatusScreen = ({navigation}) => {
                 });
               }}>
               <SvgKey />
-              <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>Разрешения</Text>
+              <Text style={{paddingLeft: 5, fontSize: 16, color: '#FFFFFF'}}>
+                {t('t:permissions')}
+              </Text>
             </TouchableOpacity>
           </View>
+          <TouchableOpacity
+            style={{
+              marginTop: 10,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#438FF4',
+              height: 50,
+              borderRadius: 10,
+            }}
+            onPress={() => bottomSheet.current.show()}>
+            <SvgWorld width="30px" height="30px" />
+            <Text style={{paddingLeft: 5, fontSize: 16, color: '#FFFFFF'}}>
+              {t('t:chooseLanguage')}
+            </Text>
+          </TouchableOpacity>
           <Text
             style={{
               fontWeight: '600',
               color: '#94A1CB',
               textAlign: 'center',
             }}>
-            Не закрыввайте приложение оставьте его в фоновом режиме
+            {t('t:do_not_close_app')}
           </Text>
         </View>
       </SafeAreaView>
+
+      <BottomSheet
+        dragIconStyle={{width: 98}}
+        backgroundColor={'rgba(17, 18, 26, 0.8)'}
+        sheetBackgroundColor={'#fff'}
+        radius={50}
+        hasDraggableIcon
+        height={247}
+        dragIconColor={'#00ADEF'}
+        ref={bottomSheet}>
+        <Text style={styles.chooseLanguage}>{t('t:chooseLanguage')}</Text>
+
+        {LANGUAGES.map(language => {
+          const selectedLanguage = language.code === selectedLanguageCode;
+          return (
+            <TouchableOpacity
+              key={language.code}
+              style={styles.buttonContainer}
+              disabled={selectedLanguage}
+              onPress={() => setLanguage(language.code)}>
+              <Text
+                style={[selectedLanguage ? styles.selectedText : styles.text]}>
+                {language.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </BottomSheet>
     </Fragment>
   );
 };
