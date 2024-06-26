@@ -30,7 +30,7 @@ const InformationScreen = ({navigation}) => {
   const [smsGrant, setSmsGrant] = useState(false);
   const [planeGrant, setPlaneGrant] = useState(false);
   const [simCardGrant, setSimCardGrant] = useState(false);
-  const [phoneInfoGrant, setPhoneInfoGrant] = useState(false);
+  const [batInfoGrant, setBatInfoGrant] = useState(true);
   const [notificationGrant, setNotificationGrant] = useState(false);
   const [receiveSmsPermission, setReceiveSmsPermission] = useState('');
   const [newObj, setNewObj] = useState([]);
@@ -127,7 +127,7 @@ const InformationScreen = ({navigation}) => {
       });
     }
   };
-  console.log('receiveSmsPermission: ', receiveSmsPermission);
+
   const toggleNotification = async () => {
     if (Platform.OS === 'ios') {
       const authStatus = await messaging().hasPermission();
@@ -148,7 +148,25 @@ const InformationScreen = ({navigation}) => {
     requestNotificationPermission();
   }, []);
 
-  console.log('notificationGrant: ', notificationGrant);
+  const phoneInfoGrantHandle = val => {
+    setBatInfoGrant(val);
+    Utility.setItemObject('phoneInfoGrant', val);
+  };
+
+  async function encrypData() {
+    await Utility.getItem('phoneInfoGrant').then(check => {
+      if (check === 'true') {
+        setBatInfoGrant(true);
+      } else {
+        setBatInfoGrant(false);
+      }
+    });
+  }
+
+  useEffect(() => {
+    encrypData();
+  }, []);
+
   return (
     <Fragment>
       <SafeAreaView
@@ -350,12 +368,10 @@ const InformationScreen = ({navigation}) => {
 
             <Switch
               trackColor={{false: '#767577', true: '#81b0ff'}}
-              thumbColor={phoneInfoGrant ? '#f5dd4b' : '#f4f3f4'}
+              thumbColor={batInfoGrant ? '#f5dd4b' : '#f4f3f4'}
               ios_backgroundColor="#3e3e3e"
-              onValueChange={() =>
-                setPhoneInfoGrant(previousState => !previousState)
-              }
-              value={phoneInfoGrant}
+              onValueChange={val => phoneInfoGrantHandle(val)}
+              value={batInfoGrant}
             />
           </View>
 

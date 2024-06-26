@@ -12,6 +12,7 @@ import {
   NativeModules,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
+import BackgroundTimer from 'react-native-background-timer';
 import PushNotification from 'react-native-push-notification';
 
 import GradientSvg from '../../assets/GradientSvg';
@@ -28,20 +29,10 @@ const RegistrationScreen = ({navigation}) => {
     sk: '4m9yzp9bkbiYWisUaojfd9AuXg25RSgLqwoRfZHQkaDGgKzke9ZVgAfDjFEYFQA1KppjGBEhNJoWg6maeVzGbo48',
     pk: 'FqeMNqD2AfKUHceJQi8ZpeyEvouzESq7248tfcXAsVD6',
   });
-  const [localNot, setLocalNot] = useState(false);
+
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
 
-  const submitLogin = () => {};
-
-  useEffect(() => {
-    BatteryModule.getBatteryLevel()
-      .then(level => setLocalNot(parseFloat(level) <= 0.2))
-      .catch(error => console.log('error', error));
-  }, []);
-  useEffect(() => {
-    LocalNotification();
-  }, localNot);
   return (
     <Fragment>
       <GradientSvg
@@ -161,6 +152,7 @@ const RegistrationScreen = ({navigation}) => {
           <Text style={styles.legend}>{t('t:secret_key')}</Text>
           <View style={styles.inputWrapper}>
             <TextInput
+              editable={false}
               style={[styles.input]}
               onChangeText={val => seTwalletKeys({...walletKeys, sk: val})}
               value={walletKeys.sk}
