@@ -1,9 +1,6 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useState} from 'react';
 import {
-  Button,
-  Image,
   SafeAreaView,
-  StyleSheet,
   Dimensions,
   Text,
   View,
@@ -12,27 +9,37 @@ import {
   NativeModules,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
-import BackgroundTimer from 'react-native-background-timer';
-import PushNotification from 'react-native-push-notification';
+import {useToast} from 'react-native-toast-notifications';
 
 import GradientSvg from '../../assets/GradientSvg';
 import styles from './styles';
 import UploadSvg from '../../assets/UploadSvg';
-import LogoSvg from '../../assets/LogoSvg';
 import LocalNotification from '../../components/LocalNotification';
+import Utility from '../../utils/Utility';
 
 const {BatteryModule} = NativeModules;
 
 const RegistrationScreen = ({navigation}) => {
+  const toast = useToast();
   const {t, i18n} = useTranslation();
-  const [walletKeys, seTwalletKeys] = useState({
-    sk: '4m9yzp9bkbiYWisUaojfd9AuXg25RSgLqwoRfZHQkaDGgKzke9ZVgAfDjFEYFQA1KppjGBEhNJoWg6maeVzGbo48',
-    pk: 'FqeMNqD2AfKUHceJQi8ZpeyEvouzESq7248tfcXAsVD6',
-  });
+  const [secretKey, setSecretKey] = useState(
+    'FqeMNqD2AfKUHceJQi8ZpeyEvouzESq7248tfcXAsVD6',
+  );
 
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
-
+  const connect = () => {
+    if (secretKey.length > 5) {
+      Utility.setItem('sk', secretKey);
+      navigation.navigate('InformationScreen');
+    } else {
+      toast.show('Введите UUID пожалуйста', {
+        type: 'warning',
+        duration: 3000,
+        animationType: 'zoom-in',
+      });
+    }
+  };
   return (
     <Fragment>
       <GradientSvg
@@ -152,10 +159,9 @@ const RegistrationScreen = ({navigation}) => {
           <Text style={styles.legend}>{t('t:secret_key')}</Text>
           <View style={styles.inputWrapper}>
             <TextInput
-              editable={false}
               style={[styles.input]}
-              onChangeText={val => seTwalletKeys({...walletKeys, sk: val})}
-              value={walletKeys.sk}
+              onChangeText={val => setSecretKey(val)}
+              value={secretKey}
               //secureTextEntry={passwordInputSecure}
               placeholderTextColor={'#000000'}
               placeholder={'FqeMNqD2AfKUHceJQi8ZpeyEvouzESq7248tfcXAsVD6'}
@@ -172,7 +178,7 @@ const RegistrationScreen = ({navigation}) => {
                 height: 50,
                 borderRadius: 10,
               }}
-              onPress={() => navigation.navigate('InformationScreen')}>
+              onPress={connect}>
               <Text style={{paddingLeft: 5, color: '#FFFFFF'}}>
                 {t('t:to_plug')}
               </Text>

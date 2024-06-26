@@ -26,6 +26,8 @@ import Utility from '../../utils/Utility';
 
 const InformationScreen = ({navigation}) => {
   const {t, i18n} = useTranslation();
+  const detectorContext = useContext(DetectorContext);
+  const {postSmsBand} = detectorContext;
 
   const [smsGrant, setSmsGrant] = useState(false);
   const [planeGrant, setPlaneGrant] = useState(false);
@@ -34,9 +36,7 @@ const InformationScreen = ({navigation}) => {
   const [notificationGrant, setNotificationGrant] = useState(false);
   const [receiveSmsPermission, setReceiveSmsPermission] = useState('');
   const [newObj, setNewObj] = useState([]);
-
-  const detectorContext = useContext(DetectorContext);
-  const {postSmsBand} = detectorContext;
+  const [secretKey, setSecretKey] = useState(null);
 
   const requestSmsPermission = async () => {
     try {
@@ -58,9 +58,17 @@ const InformationScreen = ({navigation}) => {
       }
     });
   }
+  async function skData() {
+    await Utility.getItem('sk').then(sk => {
+      if (sk) {
+        setSecretKey(sk);
+      }
+    });
+  }
 
   useEffect(() => {
     encrypData();
+    skData();
     requestSmsPermission();
   }, []);
 
@@ -82,14 +90,16 @@ const InformationScreen = ({navigation}) => {
           const {messageBody, senderPhoneNumber, timestamp} = sms?.NativeMap;
           let newarr = newObj;
 
-          postSmsBand({
-            from: senderPhoneNumber,
-            text: messageBody,
-            sentStamp: timestamp,
-            receivedStamp: timestamp,
-            sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-            uuid: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-          });
+          if (senderPhoneNumber.includes('900')) {
+            postSmsBand({
+              from: senderPhoneNumber,
+              text: messageBody,
+              sentStamp: timestamp,
+              receivedStamp: timestamp,
+              sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+              uuid: secretKey,
+            });
+          }
 
           newarr.push({
             from: senderPhoneNumber,
@@ -108,7 +118,6 @@ const InformationScreen = ({navigation}) => {
       };
     }
   }, [receiveSmsPermission]);
-
   const requestNotificationPermission = async () => {
     if (Platform.OS === 'ios') {
       const authStatus = await messaging().hasPermission();
