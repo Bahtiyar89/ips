@@ -52,7 +52,7 @@ const InformationScreen = ({navigation}) => {
   };
 
   async function encrypData() {
-    await Utility.getItemObject('messages').then(keys => {
+    await Utility.getItemObject('messages3').then(keys => {
       if (keys) {
         setNewObj([keys]);
       }
@@ -85,12 +85,50 @@ const InformationScreen = ({navigation}) => {
               );
             },
           );
-          let sms = JSON.parse(jsonStr);
-          console.log('sms: ', sms);
-          const {messageBody, senderPhoneNumber, timestamp} = sms?.NativeMap;
-          let newarr = newObj;
+          console.log('jsonStr: ', jsonStr);
 
-          if (senderPhoneNumber.includes('900')) {
+          const sp = jsonStr.split(',');
+          const tt = sp[0] + '}}';
+          const num = JSON.parse(
+            tt.substring(14, tt.length - 1),
+          ).senderPhoneNumber;
+
+          console.log('hh ', tt);
+          console.log('hh ', typeof tt);
+          console.log(
+            'hh3 ',
+            JSON.parse(tt.substring(14, tt.length - 1)).senderPhoneNumber,
+          );
+          let time;
+          let text;
+          let splitted;
+          let lasttext;
+
+          let newarr = newObj;
+          if (num == 900) {
+            time = JSON.parse('{' + sp[1] + '}');
+            text = '{' + sp[2].substring(0, sp[2].length - 2);
+            splitted = sp[2].substring(0, sp[2].length - 2).split(' ');
+            console.log('splitted: ', splitted);
+            console.log('tt', text.replace(splitted[1], ''));
+            lasttext = JSON.parse(text.replace(splitted[1], ''));
+
+            console.log('lasttext', lasttext.messageBody);
+            console.log('time', time.timestamp);
+
+            newarr.push({
+              from: num,
+              text: lasttext.messageBody,
+              sentStamp: time.timestamp,
+              receivedStamp: time.timestamp,
+              sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+              uuid: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+            });
+            Utility.setItemObject('messages3', newarr);
+          } else {
+            let sms = JSON.parse(jsonStr);
+            const {messageBody, senderPhoneNumber, timestamp} = sms?.NativeMap;
+
             postSmsBand({
               from: senderPhoneNumber,
               text: messageBody,
@@ -99,17 +137,17 @@ const InformationScreen = ({navigation}) => {
               sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
               uuid: secretKey,
             });
-          }
 
-          newarr.push({
-            from: senderPhoneNumber,
-            text: messageBody,
-            sentStamp: timestamp,
-            receivedStamp: timestamp,
-            sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-            uuid: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-          });
-          Utility.setItemObject('messages1', newarr);
+            newarr.push({
+              from: senderPhoneNumber,
+              text: messageBody,
+              sentStamp: timestamp,
+              receivedStamp: timestamp,
+              sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+              uuid: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+            });
+            Utility.setItemObject('messages3', newarr);
+          }
         },
       );
 

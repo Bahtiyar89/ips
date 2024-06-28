@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import {
   SafeAreaView,
   Dimensions,
@@ -40,6 +40,19 @@ const RegistrationScreen = ({navigation}) => {
       });
     }
   };
+
+  async function skData() {
+    await Utility.getItem('sk').then(sk => {
+      if (sk) {
+        setSecretKey(sk);
+      }
+    });
+  }
+
+  useEffect(() => {
+    skData();
+  }, []);
+
   return (
     <Fragment>
       <GradientSvg
