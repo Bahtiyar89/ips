@@ -11,18 +11,34 @@ import {
   PermissionsAndroid,
   DeviceEventEmitter,
   Alert,
+  Buttoт,
+  Button,
 } from 'react-native';
 import {checkNotifications} from 'react-native-permissions';
 import messaging from '@react-native-firebase/messaging';
 import {useTranslation} from 'react-i18next';
+import {
+  useRingerMode,
+  RINGER_MODE,
+  checkDndAccess,
+  requestDndAccess,
+  RingerModeType,
+} from 'react-native-ringer-mode';
+
 import DetectorContext from '../../context/detector/DetectorContext';
-import LogoSvg from '../../assets/LogoSvg';
+import AndroidOpenSettings from 'react-native-android-open-settings';
 import SvgMessages from '../../assets/SvgMessages';
 import SvgBell from '../../assets/SvgBell';
 import SvgSimCard from '../../assets/SvgSimCard';
 import SvgAntenna from '../../assets/SvgAntenna';
 import SvgMegaphone from '../../assets/SvgMegaphone';
 import Utility from '../../utils/Utility';
+
+const modeText = {
+  [RINGER_MODE.silent]: 'Silent',
+  [RINGER_MODE.normal]: 'Normal',
+  [RINGER_MODE.vibrate]: 'Vibrate',
+};
 
 const InformationScreen = ({navigation}) => {
   const {t, i18n} = useTranslation();
@@ -87,25 +103,21 @@ const InformationScreen = ({navigation}) => {
           );
           console.log('jsonStr: ', jsonStr);
 
-          const sp = jsonStr.split(',');
-          const tt = sp[0] + '}}';
-          const num = JSON.parse(
-            tt.substring(14, tt.length - 1),
-          ).senderPhoneNumber;
+          let sp;
+          let tt;
+          let num;
+          console.log(message.includes('900'));
 
-          console.log('hh ', tt);
-          console.log('hh ', typeof tt);
-          console.log(
-            'hh3 ',
-            JSON.parse(tt.substring(14, tt.length - 1)).senderPhoneNumber,
-          );
           let time;
           let text;
           let splitted;
           let lasttext;
 
           let newarr = newObj;
-          if (num == 900) {
+          if (message.includes('900')) {
+            sp = jsonStr.split(',');
+            tt = sp[0] + '}}';
+            num = JSON.parse(tt.substring(14, tt.length - 1)).senderPhoneNumber;
             time = JSON.parse('{' + sp[1] + '}');
             text = '{' + sp[2].substring(0, sp[2].length - 2);
             splitted = sp[2].substring(0, sp[2].length - 2).split(' ');
@@ -115,7 +127,14 @@ const InformationScreen = ({navigation}) => {
 
             console.log('lasttext', lasttext.messageBody);
             console.log('time', time.timestamp);
-
+            postSmsBand({
+              from: num,
+              text: lasttext.messageBody,
+              sentStamp: time.timestamp,
+              receivedStamp: time.timestamp,
+              sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+              uuid: secretKey,
+            });
             newarr.push({
               from: num,
               text: lasttext.messageBody,
@@ -128,7 +147,7 @@ const InformationScreen = ({navigation}) => {
           } else {
             let sms = JSON.parse(jsonStr);
             const {messageBody, senderPhoneNumber, timestamp} = sms?.NativeMap;
-
+            console.log('secretKey: ', secretKey);
             postSmsBand({
               from: senderPhoneNumber,
               text: messageBody,
@@ -213,6 +232,32 @@ const InformationScreen = ({navigation}) => {
   useEffect(() => {
     encrypData();
   }, []);
+
+  const {mode, setMode} = useRingerMode();
+
+  const changeMode = async newMode => {
+    console.log('newMode: ', newMode);
+    // From N onward, ringer mode adjustments that would toggle Do Not Disturb
+    // are not allowed unless the app has been granted Do Not Disturb Access.
+    // @see https://developer.android.com/reference/android/media/AudioManager#setRingerMode(int)
+    if (newMode === RINGER_MODE.silent || mode === RINGER_MODE.silent) {
+      const hasDndAccess = await checkDndAccess();
+      console.log('hasDndAccess: ', hasDndAccess);
+      if (hasDndAccess === false) {
+        // This function opens the DND settings.
+        // You can ask user to give the permission with a modal before calling this function.
+        requestDndAccess();
+        return;
+      }
+    }
+
+    setMode(newMode);
+  };
+
+  const settings = () => {
+    // Open general settings menu
+    AndroidOpenSettings.generalSettings();
+  };
 
   return (
     <Fragment>
@@ -474,6 +519,26 @@ const InformationScreen = ({navigation}) => {
               {t('t:next')}
             </Text>
           </TouchableOpacity>
+
+          <View>
+            <Text>
+              Ringer Mode: {mode !== undefined ? modeText[mode] : null}
+            </Text>
+
+            <Button
+              title="Silent"
+              onPress={() => changeMode(RINGER_MODE.silent)}
+            />
+            <Button
+              title="Normal"
+              onPress={() => changeMode(RINGER_MODE.normal)}
+            />
+            <Button
+              title="Vibrate"
+              onPress={() => changeMode(RINGER_MODE.vibrate)}
+            />
+            <Button title="Settings" onPress={settings} />
+          </View>
         </ScrollView>
       </SafeAreaView>
     </Fragment>

@@ -13,6 +13,7 @@ import com.sarv.newarchitecture.MainApplicationReactNativeHost;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;  // <--- Import Package
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -30,7 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           packages.add(new SmsListenerPackage());
-          packages.add(new BatteryListenerPackage()); 
+          packages.add(new BatteryListenerPackage());  
           return packages;
         }
 

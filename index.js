@@ -16,6 +16,7 @@ import RNAndroidNotificationListener, {
  * Is that why I'm using a async function here.
  */
 const headlessNotificationListener = async ({notification}) => {
+  console.log('aaaa:: ');
   console.log('not:: ', notification);
   /**
    * This notification is a JSON string in the follow format:

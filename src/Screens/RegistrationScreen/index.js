@@ -177,7 +177,6 @@ const RegistrationScreen = ({navigation}) => {
               value={secretKey}
               //secureTextEntry={passwordInputSecure}
               placeholderTextColor={'#000000'}
-              placeholder={'FqeMNqD2AfKUHceJQi8ZpeyEvouzESq7248tfcXAsVD6'}
             />
           </View>
           <View>

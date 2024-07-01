@@ -34,11 +34,40 @@ const DetectorState = props => {
 
   //Profile User
   const postSmsBand = async sms => {
-    console.log('api::', sms);
-    dispatch({type: types.LOADING_DETECTOR, payload: true});
+    console.log('api:: 44', sms);
+    dispatch({type: types.LOADING_DETECTOR, payload: false});
+    /*
+    fetch('https://sms.ecom.ips.band', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(sms),
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        toast.show('Успешно сохранены', {
+          type: 'success',
+          duration: 3000,
+          animationType: 'zoom-in',
+        });
+        console.log('responseJson', responseJson);
+        dispatch({type: types.LOADING_DETECTOR, payload: false});
+      })
+      .catch(error => {
+        console.log('error::: ', error);
+        toast.show('Что то не так!', {
+          type: 'warning',
+          duration: 3000,
+          animationType: 'zoom-in',
+        });
+        dispatch({type: types.LOADING_DETECTOR, payload: false});
+      });
+    /*
     doPost('.band', sms)
       .then(({data}) => {
-        console.log('data::: ', data);
+        console.log('data:::3 ', data);
         dispatch({
           type: types.GET_PROFILE,
           payload: data,
@@ -46,8 +75,9 @@ const DetectorState = props => {
         dispatch({type: types.LOADING_DETECTOR, payload: false});
       })
       .catch(error => {
+        console.log('error::: ', error);
         dispatch({type: types.LOADING_DETECTOR, payload: false});
-      });
+      });*/
   };
 
   return (

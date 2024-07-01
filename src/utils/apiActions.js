@@ -18,6 +18,8 @@ export const doPost = async (uri, postData, params = {}) => {
     },
     params,
   };
+  console.log('postData: ', postData);
+  console.log('config: ', config);
   return await axios.post('https://sms.ecom.ips' + uri, postData, config);
 };
 
