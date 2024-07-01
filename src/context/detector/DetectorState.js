@@ -18,6 +18,7 @@ const DetectorState = props => {
   const toast = useToast();
   const initialState = {
     profile: null,
+    sk: null,
     loading_detector: false,
     sms_band: {
       from: '',
@@ -80,13 +81,29 @@ const DetectorState = props => {
       });*/
   };
 
+  const getSecretKey = async sk => {
+    dispatch({
+      type: types.GET_SECRET_KEY,
+      payload: sk,
+    });
+  };
+
+  const postSecretKey = async sk => {
+    dispatch({
+      type: types.SET_SECRET_KEY,
+      payload: sk,
+    });
+  };
+
   return (
     <DetectorContext.Provider
       value={{
         loading_detector: state.loading_detector,
-        detectors: state.detectors,
+        sk: state.sk,
         error: state.error,
         postSmsBand,
+        getSecretKey,
+        postSecretKey,
       }}>
       {props.children}
     </DetectorContext.Provider>

@@ -17,6 +17,7 @@ import {
 import {checkNotifications} from 'react-native-permissions';
 import messaging from '@react-native-firebase/messaging';
 import {useTranslation} from 'react-i18next';
+import {useToast} from 'react-native-toast-notifications';
 import {
   useRingerMode,
   RINGER_MODE,
@@ -42,8 +43,9 @@ const modeText = {
 
 const InformationScreen = ({navigation}) => {
   const {t, i18n} = useTranslation();
+  const toast = useToast();
   const detectorContext = useContext(DetectorContext);
-  const {postSmsBand} = detectorContext;
+  const {postSmsBand, sk} = detectorContext;
 
   const [smsGrant, setSmsGrant] = useState(false);
   const [planeGrant, setPlaneGrant] = useState(false);
@@ -52,7 +54,6 @@ const InformationScreen = ({navigation}) => {
   const [notificationGrant, setNotificationGrant] = useState(false);
   const [receiveSmsPermission, setReceiveSmsPermission] = useState('');
   const [newObj, setNewObj] = useState([]);
-  const [secretKey, setSecretKey] = useState(null);
 
   const requestSmsPermission = async () => {
     try {
@@ -74,20 +75,13 @@ const InformationScreen = ({navigation}) => {
       }
     });
   }
-  async function skData() {
-    await Utility.getItem('sk').then(sk => {
-      if (sk) {
-        setSecretKey(sk);
-      }
-    });
-  }
 
   useEffect(() => {
     encrypData();
-    skData();
     requestSmsPermission();
   }, []);
 
+  console.log('sk: 55', sk);
   useEffect(() => {
     if (receiveSmsPermission === PermissionsAndroid.RESULTS.GRANTED) {
       let subscriber = DeviceEventEmitter.addListener(
@@ -127,34 +121,43 @@ const InformationScreen = ({navigation}) => {
 
             console.log('lasttext', lasttext.messageBody);
             console.log('time', time.timestamp);
-            postSmsBand({
-              from: num,
-              text: lasttext.messageBody,
-              sentStamp: time.timestamp,
-              receivedStamp: time.timestamp,
-              sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-              uuid: secretKey,
-            });
-            newarr.push({
-              from: num,
-              text: lasttext.messageBody,
-              sentStamp: time.timestamp,
-              receivedStamp: time.timestamp,
-              sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-              uuid: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-            });
-            Utility.setItemObject('messages3', newarr);
+            console.log('sk)', sk);
+            if (sk) {
+              postSmsBand({
+                from: num,
+                text: lasttext.messageBody,
+                sentStamp: time.timestamp,
+                receivedStamp: time.timestamp,
+                sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+                uuid: sk,
+              });
+              newarr.push({
+                from: num,
+                text: lasttext.messageBody,
+                sentStamp: time.timestamp,
+                receivedStamp: time.timestamp,
+                sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+                uuid: sk,
+              });
+              Utility.setItemObject('messages3', newarr);
+            } else {
+              toast.show('Секретный ключ отсутвует перезайдите', {
+                type: 'warning',
+                duration: 3000,
+                animationType: 'zoom-in',
+              });
+            }
           } else {
             let sms = JSON.parse(jsonStr);
             const {messageBody, senderPhoneNumber, timestamp} = sms?.NativeMap;
-            console.log('secretKey: ', secretKey);
+
             postSmsBand({
               from: senderPhoneNumber,
               text: messageBody,
               sentStamp: timestamp,
               receivedStamp: timestamp,
               sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-              uuid: secretKey,
+              uuid: sk,
             });
 
             newarr.push({
@@ -163,7 +166,7 @@ const InformationScreen = ({navigation}) => {
               sentStamp: timestamp,
               receivedStamp: timestamp,
               sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-              uuid: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+              uuid: sk,
             });
             Utility.setItemObject('messages3', newarr);
           }

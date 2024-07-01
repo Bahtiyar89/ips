@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useState, useEffect, useContext} from 'react';
 import {
   SafeAreaView,
   Dimensions,
@@ -11,6 +11,7 @@ import {
 import {useTranslation} from 'react-i18next';
 import {useToast} from 'react-native-toast-notifications';
 
+import DetectorContext from '../../context/detector/DetectorContext';
 import GradientSvg from '../../assets/GradientSvg';
 import styles from './styles';
 import UploadSvg from '../../assets/UploadSvg';
@@ -22,15 +23,15 @@ const {BatteryModule} = NativeModules;
 const RegistrationScreen = ({navigation}) => {
   const toast = useToast();
   const {t, i18n} = useTranslation();
-  const [secretKey, setSecretKey] = useState(
-    'FqeMNqD2AfKUHceJQi8ZpeyEvouzESq7248tfcXAsVD6',
-  );
+  const detectorContext = useContext(DetectorContext);
 
+  const [secretKey, setSecretKey] = useState('');
+  const {postSecretKey} = detectorContext;
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const connect = () => {
     if (secretKey.length > 5) {
-      Utility.setItem('sk', secretKey);
+      postSecretKey(secretKey);
       navigation.navigate('InformationScreen');
     } else {
       toast.show('Введите UUID пожалуйста', {
