@@ -218,6 +218,12 @@ const InformationScreen = ({navigation}) => {
   }, []);
 
   const phoneInfoGrantHandle = val => {
+    console.log('val: ', val);
+    if (val) {
+      changeMode(RINGER_MODE.vibrate);
+    } else {
+      changeMode(RINGER_MODE.normal);
+    }
     setBatInfoGrant(val);
     Utility.setItemObject('phoneInfoGrant', val);
   };
@@ -262,6 +268,7 @@ const InformationScreen = ({navigation}) => {
     AndroidOpenSettings.generalSettings();
   };
 
+  console.log('batInfoGrant: ', batInfoGrant);
   return (
     <Fragment>
       <SafeAreaView
@@ -523,7 +530,7 @@ const InformationScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
 
-          <View>
+          {/* <View>
             <Text>
               Ringer Mode: {mode !== undefined ? modeText[mode] : null}
             </Text>
@@ -541,7 +548,7 @@ const InformationScreen = ({navigation}) => {
               onPress={() => changeMode(RINGER_MODE.vibrate)}
             />
             <Button title="Settings" onPress={settings} />
-          </View>
+          </View>*/}
         </ScrollView>
       </SafeAreaView>
     </Fragment>

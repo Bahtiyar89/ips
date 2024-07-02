@@ -37,7 +37,7 @@ const DetectorState = props => {
   const postSmsBand = async sms => {
     console.log('api:: 44', sms);
     dispatch({type: types.LOADING_DETECTOR, payload: false});
-    /*
+
     fetch('https://sms.ecom.ips.band', {
       method: 'POST',
       headers: {
