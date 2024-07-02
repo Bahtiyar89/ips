@@ -1,9 +1,29 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {SafeAreaView, Dimensions, Text, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
+import {useToast} from 'react-native-toast-notifications';
+import Utility from '../../utils/Utility';
 
 const NotificationScreen = ({navigation}) => {
   const {t, i18n} = useTranslation();
+  const toast = useToast();
+
+  async function encrypData() {
+    await Utility.getItemObject('@lastNotification').then(keys => {
+      console.log('keys: ', keys);
+      if (keys.text) {
+        toast.show(keys.text, {
+          type: 'success',
+          duration: 3000,
+          animationType: 'zoom-in',
+        });
+      }
+    });
+  }
+
+  useEffect(() => {
+    encrypData();
+  }, []);
   return (
     <Fragment>
       <SafeAreaView
@@ -35,7 +55,7 @@ const NotificationScreen = ({navigation}) => {
                 justifyContent: 'space-between',
               }}>
               <Text style={{color: '#94A1CB'}}>{t('t:sender')}:</Text>
-              <Text style={{color: '#438FF4'}}>+79055850105</Text>
+              <Text style={{color: '#438FF4'}}>+noti</Text>
             </View>
             <Text style={{color: '#94A1CB'}}>13:56:38</Text>
           </View>

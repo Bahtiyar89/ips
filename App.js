@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {ToastProvider} from 'react-native-toast-notifications';
-import PushNotification from 'react-native-push-notification';
 import BackgroundTimer from 'react-native-background-timer';
 import messaging from '@react-native-firebase/messaging';
-import {Platform, PermissionsAndroid, NativeModules} from 'react-native';
+import {Platform, PermissionsAndroid, NativeModules, Alert} from 'react-native';
+import RNAndroidNotificationListener, {
+  RNAndroidNotificationListenerHeadlessJsName,
+} from 'react-native-android-notification-listener';
 
 import Entrypoint from './src/Entrypoint';
 import DetectorState from './src/context/detector/DetectorState';
@@ -70,8 +72,18 @@ const App = () => {
     });
   }
 
+  const checkStatus = async () => {
+    // To check if the user has permission
+    const status = await RNAndroidNotificationListener.getPermissionStatus();
+    console.log('status', status == 'denied'); // Result can be 'authorized', 'denied' or 'unknown'
+    Alert.alert('status', status);
+    if (status == 'denied') {
+      RNAndroidNotificationListener.requestPermission();
+    }
+  };
   useEffect(() => {
     encrypData();
+    checkStatus();
   }, []);
 
   return (
