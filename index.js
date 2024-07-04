@@ -41,12 +41,13 @@ const headlessNotificationListener = async ({notification}) => {
    */
 
   if (notification) {
-    Alert.alert(JSON.stringify(notification));
+    console.log('notification: ', notification);
+    // Alert.alert(JSON.stringify(notification));
     /**
      * Here you could store the notifications in a external API.
      * I'm using AsyncStorage here as an example.
      */
-    await AsyncStorage.setItem('@lastNotification', notification.text);
+    // await AsyncStorage.setItem('@lastNotification', notification.text);
   }
 };
 

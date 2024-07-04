@@ -1,6 +1,6 @@
 const searchCities = (query, filteredData) => {
   const filtered = filteredData?.filter(listItem =>
-    listItem.from.toLowerCase().includes(query.toLowerCase()),
+    listItem?.from?.toLowerCase().includes(query.toLowerCase()),
   );
 
   return filtered;

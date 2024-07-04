@@ -76,10 +76,10 @@ const App = () => {
     // To check if the user has permission
     const status = await RNAndroidNotificationListener.getPermissionStatus();
     console.log('status', status == 'denied'); // Result can be 'authorized', 'denied' or 'unknown'
-    Alert.alert('status', status);
+    /*  Alert.alert('status', status);
     if (status == 'denied') {
       RNAndroidNotificationListener.requestPermission();
-    }
+    }*/
   };
   useEffect(() => {
     encrypData();

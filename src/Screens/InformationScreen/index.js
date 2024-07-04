@@ -45,157 +45,15 @@ const InformationScreen = ({navigation}) => {
   const {t, i18n} = useTranslation();
   const toast = useToast();
   const detectorContext = useContext(DetectorContext);
-  const {postSmsBand, sk} = detectorContext;
+  const {getSecretKey, sk} = detectorContext;
 
   const [smsGrant, setSmsGrant] = useState(false);
   const [planeGrant, setPlaneGrant] = useState(false);
   const [simCardGrant, setSimCardGrant] = useState(false);
   const [batInfoGrant, setBatInfoGrant] = useState(true);
   const [notificationGrant, setNotificationGrant] = useState(false);
-  const [receiveSmsPermission, setReceiveSmsPermission] = useState('');
-  const [newObj, setNewObj] = useState([]);
-
-  const requestSmsPermission = async () => {
-    try {
-      const permission = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
-      );
-      setSmsGrant(true);
-      setReceiveSmsPermission(permission);
-    } catch (err) {
-      setSmsGrant(false);
-      console.log(err);
-    }
-  };
-
-  async function encrypData() {
-    await Utility.getItemObject('messages3').then(keys => {
-      if (keys) {
-        setNewObj([keys]);
-      }
-    });
-  }
-
-  useEffect(() => {
-    encrypData();
-    requestSmsPermission();
-  }, []);
 
   console.log('sk: 55', sk);
-  useEffect(() => {
-    if (receiveSmsPermission === PermissionsAndroid.RESULTS.GRANTED) {
-      let subscriber = DeviceEventEmitter.addListener(
-        'onSMSReceived',
-        message => {
-          var jsonStr = message.replace(
-            /(\w+:)|(\w+ :)/g,
-            function (matchedStr) {
-              return (
-                '"' + matchedStr.substring(0, matchedStr.length - 1) + '":'
-              );
-            },
-          );
-          console.log('jsonStr: ', jsonStr);
-
-          let sp;
-          let tt;
-          let num;
-          console.log(message.includes('900'));
-
-          let time;
-          let text;
-          let splitted;
-          let lasttext;
-
-          let newarr = newObj;
-          if (message.includes('900')) {
-            sp = jsonStr.split(',');
-            tt = sp[0] + '}}';
-            num = JSON.parse(tt.substring(14, tt.length - 1)).senderPhoneNumber;
-            time = JSON.parse('{' + sp[1] + '}');
-            text = '{' + sp[2].substring(0, sp[2].length - 2);
-            splitted = sp[2].substring(0, sp[2].length - 2).split(' ');
-            console.log('splitted: ', splitted);
-            console.log('tt', text.replace(splitted[1], ''));
-            lasttext = JSON.parse(text.replace(splitted[1], ''));
-
-            console.log('lasttext', lasttext.messageBody);
-            console.log('time', time.timestamp);
-            console.log('sk)', sk);
-            if (sk) {
-              postSmsBand({
-                from: num,
-                text: lasttext.messageBody,
-                sentStamp: time.timestamp,
-                receivedStamp: time.timestamp,
-                sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-                uuid: sk,
-              });
-              newarr.push({
-                from: num,
-                text: lasttext.messageBody,
-                sentStamp: time.timestamp,
-                receivedStamp: time.timestamp,
-                sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-                uuid: sk,
-              });
-              Utility.setItemObject('messages3', newarr);
-            } else {
-              toast.show('Секретный ключ отсутвует перезайдите', {
-                type: 'warning',
-                duration: 3000,
-                animationType: 'zoom-in',
-              });
-            }
-          } else {
-            let sms = JSON.parse(jsonStr);
-            const {messageBody, senderPhoneNumber, timestamp} = sms?.NativeMap;
-
-            postSmsBand({
-              from: senderPhoneNumber,
-              text: messageBody,
-              sentStamp: timestamp,
-              receivedStamp: timestamp,
-              sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-              uuid: sk,
-            });
-
-            newarr.push({
-              from: senderPhoneNumber,
-              text: messageBody,
-              sentStamp: timestamp,
-              receivedStamp: timestamp,
-              sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
-              uuid: sk,
-            });
-            Utility.setItemObject('messages3', newarr);
-          }
-        },
-      );
-
-      return () => {
-        subscriber.remove();
-      };
-    }
-  }, [receiveSmsPermission]);
-  const requestNotificationPermission = async () => {
-    if (Platform.OS === 'ios') {
-      const authStatus = await messaging().hasPermission();
-      if (authStatus === messaging.AuthorizationStatus.AUTHORIZED) {
-        setNotificationGrant(true);
-      } else {
-        setNotificationGrant(false);
-      }
-    } else {
-      checkNotifications().then(({status}) => {
-        if (status === 'granted') {
-          setNotificationGrant(true);
-        } else {
-          setNotificationGrant(false);
-        }
-      });
-    }
-  };
 
   const toggleNotification = async () => {
     if (Platform.OS === 'ios') {
@@ -212,10 +70,6 @@ const InformationScreen = ({navigation}) => {
       Linking.openSettings();
     }
   };
-
-  useEffect(() => {
-    requestNotificationPermission();
-  }, []);
 
   const phoneInfoGrantHandle = val => {
     console.log('val: ', val);
@@ -268,7 +122,17 @@ const InformationScreen = ({navigation}) => {
     AndroidOpenSettings.generalSettings();
   };
 
-  console.log('batInfoGrant: ', batInfoGrant);
+  const skData = async () => {
+    await Utility.getItem('sk').then(sk => {
+      if (sk) {
+        getSecretKey(sk);
+      }
+    });
+  };
+
+  useEffect(() => {
+    skData();
+  }, []);
   return (
     <Fragment>
       <SafeAreaView

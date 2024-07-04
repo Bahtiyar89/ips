@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {TextInput, SafeAreaView, Text, View, FlatList} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
+import DetectorContext from '../../context/detector/DetectorContext';
 import searchCities from './helper';
-import Utility from '../../utils/Utility';
 import moment from 'moment';
 
 function MessagesStatusScreen() {
@@ -11,7 +11,9 @@ function MessagesStatusScreen() {
 
   const [input, setInput] = useState('');
   const [results, setResults] = useState([]);
-  const [newObj, setNewObj] = useState([]);
+
+  const detectorContext = useContext(DetectorContext);
+  const {allSMS} = detectorContext;
 
   const handleOnChangeText = text => {
     setInput(text);
@@ -20,7 +22,7 @@ function MessagesStatusScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       console.log('### Search API Call made with', input);
-      const results = searchCities(input, newObj); // API Call made
+      const results = searchCities(input, allSMS); // API Call made
       if (results.length > 0) {
         setResults(results);
       }
@@ -28,21 +30,7 @@ function MessagesStatusScreen() {
 
     return () => clearTimeout(timer);
   }, [input]);
-
-  async function encrypData() {
-    await Utility.getItemObject('messages3').then(keys => {
-      console.log('keys: ', keys);
-      if (keys) {
-        setNewObj(keys);
-        setResults(keys);
-      }
-    });
-  }
-
-  useEffect(() => {
-    encrypData();
-  }, []);
-
+  console.log('allSMS: ', allSMS);
   return (
     <SafeAreaView
       style={{
@@ -68,13 +56,12 @@ function MessagesStatusScreen() {
       />
 
       <FlatList
-        data={results}
+        data={results.reverse()}
         // ListHeaderComponent={renderHeader}
         // ListFooterComponent={renderFooter}
         // ListEmptyComponent={emptyListView}
         // ItemSeparatorComponent={renderSeparator}
         renderItem={({item, index}) => {
-          console.log('index: ', index);
           return (
             <View
               key={index}
@@ -101,10 +88,12 @@ function MessagesStatusScreen() {
                   <Text style={{color: '#438FF4'}}> {item.from}</Text>
                 </View>
                 <Text style={{color: '#94A1CB'}}>
-                  {moment(item.receivedStamp).format('DD.MM.YYYY hh:mm')}
+                  {moment(item.delivery_time)
+                    .add(3, 'hours')
+                    .format('DD.MM.YYYY HH:mm')}
                 </Text>
               </View>
-              <Text style={{color: '#94A1CB'}}>{item.text}</Text>
+              <Text style={{color: '#94A1CB'}}>{item?.original_text}</Text>
               <Text style={{color: '#94A1CB'}}>{t('t:total_messages')}: 1</Text>
             </View>
           );

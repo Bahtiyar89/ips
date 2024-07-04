@@ -18,6 +18,7 @@ const DetectorState = props => {
   const toast = useToast();
   const initialState = {
     profile: null,
+    allSMS: [],
     sk: null,
     loading_detector: false,
     sms_band: {
@@ -25,7 +26,7 @@ const DetectorState = props => {
       transaction_amount: 0,
       currency: '',
       uuid: '',
-      original_text: '',
+      text: '',
       delivery_time: '',
     },
     error: false,
@@ -50,15 +51,19 @@ const DetectorState = props => {
       .then(responseJson => {
         toast.show('Успешно сохранены', {
           type: 'success',
-          duration: 3000,
+          duration: 30000,
           animationType: 'zoom-in',
+        });
+        dispatch({
+          type: types.POST_SMS,
+          payload: responseJson,
         });
         console.log('responseJson', responseJson);
         dispatch({type: types.LOADING_DETECTOR, payload: false});
       })
       .catch(error => {
         console.log('error::: ', error);
-        toast.show('Что то не так!', {
+        toast.show(error, {
           type: 'warning',
           duration: 3000,
           animationType: 'zoom-in',
@@ -95,12 +100,21 @@ const DetectorState = props => {
     });
   };
 
+  const postAllSMS = async sms => {
+    dispatch({
+      type: types.POST_ALL_SMS,
+      payload: sms,
+    });
+  };
+
   return (
     <DetectorContext.Provider
       value={{
         loading_detector: state.loading_detector,
         sk: state.sk,
+        allSMS: state.allSMS,
         error: state.error,
+        postAllSMS,
         postSmsBand,
         getSecretKey,
         postSecretKey,
