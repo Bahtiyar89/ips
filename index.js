@@ -10,14 +10,13 @@ import 'react-native-gesture-handler';
 import RNAndroidNotificationListener, {
   RNAndroidNotificationListenerHeadlessJsName,
 } from 'react-native-android-notification-listener';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Utility from './src/utils/Utility';
 
 /**
  * Note that this method MUST return a Promise.
  * Is that why I'm using a async function here.
  */
 const headlessNotificationListener = async ({notification}) => {
-  console.log('not:: ', notification);
   /**
    * This notification is a JSON string in the follow format:
    *  {
@@ -41,13 +40,13 @@ const headlessNotificationListener = async ({notification}) => {
    */
 
   if (notification) {
-    console.log('notification: ', notification);
+    console.log('notification:33 ', notification);
     // Alert.alert(JSON.stringify(notification));
     /**
      * Here you could store the notifications in a external API.
      * I'm using AsyncStorage here as an example.
      */
-    // await AsyncStorage.setItem('@lastNotification', notification.text);
+    await Utility.setItemObject('@lastNotification', notification);
   }
 };
 

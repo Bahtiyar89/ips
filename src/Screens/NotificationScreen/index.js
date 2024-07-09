@@ -11,8 +11,8 @@ const NotificationScreen = ({navigation}) => {
   async function encrypData() {
     await Utility.getItemObject('@lastNotification').then(keys => {
       console.log('keys: ', keys);
-      if (keys.text) {
-        toast.show(keys.text, {
+      if (keys) {
+        toast.show(keys, {
           type: 'success',
           duration: 3000,
           animationType: 'zoom-in',

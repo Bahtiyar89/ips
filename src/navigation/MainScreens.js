@@ -1,11 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {
-  Text,
-  View,
-  PermissionsAndroid,
-  StyleSheet,
-  DeviceEventEmitter,
-} from 'react-native';
+import {Text, View, PermissionsAndroid, DeviceEventEmitter} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {checkNotifications} from 'react-native-permissions';
 import {useToast} from 'react-native-toast-notifications';
@@ -25,11 +19,8 @@ const MainScreens = () => {
   const toast = useToast();
   const {t, i18n} = useTranslation();
   const detectorContext = useContext(DetectorContext);
-  const {postSmsBand, getSecretKey, sk, postAllSMS} = detectorContext;
-  const [accessToken, setAccessToken] = useState(true);
-  const [secret, setSecret] = useState(null);
+  const {postSmsBand, sk, postAllSMS} = detectorContext;
   const [receiveSmsPermission, setReceiveSmsPermission] = useState('');
-  const [notificationGrant, setNotificationGrant] = useState(false);
 
   const requestSmsPermission = async () => {
     try {
@@ -40,25 +31,6 @@ const MainScreens = () => {
       setReceiveSmsPermission(permission);
     } catch (err) {
       console.log(err);
-    }
-  };
-
-  const requestNotificationPermission = async () => {
-    if (Platform.OS === 'ios') {
-      const authStatus = await messaging().hasPermission();
-      if (authStatus === messaging.AuthorizationStatus.AUTHORIZED) {
-        setNotificationGrant(true);
-      } else {
-        setNotificationGrant(false);
-      }
-    } else {
-      checkNotifications().then(({status}) => {
-        if (status === 'granted') {
-          setNotificationGrant(true);
-        } else {
-          setNotificationGrant(false);
-        }
-      });
     }
   };
 
@@ -80,12 +52,6 @@ const MainScreens = () => {
       let subscriber = DeviceEventEmitter.addListener(
         'onSMSReceived',
         message => {
-          console.log('kkk', message);
-          console.log(
-            'ddd',
-            JSON.parse(message.substring(12, message.length - 2)),
-          );
-
           const {senderPhoneNumber, messageBody, timestamp} = JSON.parse(
             message.substring(12, message.length - 2),
           );
@@ -115,10 +81,6 @@ const MainScreens = () => {
       };
     }
   }, [receiveSmsPermission, sk]);
-
-  useEffect(() => {
-    requestNotificationPermission();
-  }, []);
 
   const renderMessagesHeader = () => (
     <View style={{backgroundColor: 'grey', paddingLeft: 20}}>
