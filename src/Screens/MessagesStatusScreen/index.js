@@ -30,6 +30,10 @@ function MessagesStatusScreen() {
 
     return () => clearTimeout(timer);
   }, [input]);
+
+  useEffect(() => {
+    setResults(allSMS);
+  }, [allSMS]);
   console.log('allSMS: ', allSMS);
   return (
     <SafeAreaView

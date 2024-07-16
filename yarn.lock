@@ -6314,6 +6314,11 @@ react-native-permissions@^4.1.5:
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-4.1.5.tgz#db4d1ddbf076570043f4fd4168f54bb6020aec92"
   integrity sha512-r6VMRacASmtRHS+GZ+5HQCp9p9kiE+UU9magHOZCXZLTJitdTuVHWZRrb4v4oqZGU+zAp3mZhTQftuMMv+WLUg==
 
+react-native-phone-number@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-phone-number/-/react-native-phone-number-1.0.0.tgz#6b62c7beb4d9e7cd217fba77ee20d5326974896d"
+  integrity sha512-VnTcayd2DqWEdR1Azcy8vx/X5mSSB3ZXnrNnEDPIVPOzu3boAKW6gbk4uFd/q+3WmihX9750vS+trrxO+0Sp+A==
+
 react-native-push-notification@^8.1.1:
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-8.1.1.tgz#a41d20c70ea5a7709417e96261b225461f8dc73a"

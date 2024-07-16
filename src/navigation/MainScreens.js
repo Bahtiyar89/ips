@@ -1,7 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {Text, View, PermissionsAndroid, DeviceEventEmitter} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {checkNotifications} from 'react-native-permissions';
 import {useToast} from 'react-native-toast-notifications';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -21,6 +20,7 @@ const MainScreens = () => {
   const detectorContext = useContext(DetectorContext);
   const {postSmsBand, sk, postAllSMS} = detectorContext;
   const [receiveSmsPermission, setReceiveSmsPermission] = useState('');
+  const [simCardNumber, setSimCardNumber] = useState('');
 
   const requestSmsPermission = async () => {
     try {
@@ -42,9 +42,18 @@ const MainScreens = () => {
     });
   }
 
+  const getSimcardAsync = async () => {
+    await Utility.getItemObject('@sim_card_number').then(keys => {
+      if (keys) {
+        setSimCardNumber(keys);
+      }
+    });
+  };
+
   useEffect(() => {
     encrypData();
     requestSmsPermission();
+    getSimcardAsync();
   }, []);
 
   useEffect(() => {
@@ -68,7 +77,7 @@ const MainScreens = () => {
                 text: messageBody,
                 sentStamp: timestamp,
                 receivedStamp: timestamp,
-                sim: '55970bc2-5afc-4d4c-b6dd-0bf83f4fbad6',
+                sim: simCardNumber,
                 uuid: sk,
               });
             }

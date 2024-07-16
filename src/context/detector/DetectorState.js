@@ -51,7 +51,7 @@ const DetectorState = props => {
       .then(responseJson => {
         toast.show('Успешно сохранены', {
           type: 'success',
-          duration: 30000,
+          duration: 10000,
           animationType: 'zoom-in',
         });
         dispatch({
